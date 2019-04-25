@@ -1,12 +1,27 @@
 #include "methods.h"
-// #include <sstream>
-// #include <string>
-// #include <vector>
-// #include <iostream>
+#include <sstream>
+#include <string>
+#include <iostream>
+
+static const std::string base64_chars = 
+             "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+             "abcdefghijklmnopqrstuvwxyz"
+             "0123456789+/";
 
 std::string methods::jwtcpp(std::string val)
 {
-    return val;
+    std::istringstream f(val);
+    std::string s;
+    std::string found;
+    int ii = 0;
+    while (std::getline(f, s, '.')) {
+        ii++;
+        if(ii==2){
+            found = s;
+        }
+    }
+    
+    return methods::base64_decode(found);
 }
 
 Napi::String methods::jwtcppWrapped(const Napi::CallbackInfo &info)
@@ -19,36 +34,46 @@ Napi::String methods::jwtcppWrapped(const Napi::CallbackInfo &info)
     return returnValue;
 }
 
-// std::vector<std::string> methods::splitjwt(const std::string &s, char delimiter)
-// {
-//     std::vector<std::string> tokens;
-//     std::string token;
-//     std::istringstream tokenStream(s);
-//     while (std::getline(tokenStream, token, delimiter))
-//     {
-//         tokens.push_back(token);
-//     }
-//     return tokens;
-// }
+std::string methods::base64_decode(std::string const& encoded_string) {
+  int in_len = encoded_string.size();
+  int i = 0;
+  int j = 0;
+  int in_ = 0;
+  unsigned char char_array_4[4], char_array_3[3];
+  std::string ret;
 
-// int methods::add(int a, int b)
-// {
-//     return a + b;
-// }
+  while (in_len-- && ( encoded_string[in_] != '=') && true) {
+    char_array_4[i++] = encoded_string[in_]; in_++;
+    if (i ==4) {
+      for (i = 0; i <4; i++)
+        char_array_4[i] = base64_chars.find(char_array_4[i]);
 
-// Napi::Number methods::AddWrapped(const Napi::CallbackInfo& info) {
-//     Napi::Env env = info.Env();
-//     if (info.Length() < 2 || !info[0].IsNumber() || !info[1].IsNumber()) {
-//         Napi::TypeError::New(env, "Number expected").ThrowAsJavaScriptException();
-//     }
+      char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
+      char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
+      char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
 
-//     Napi::Number first = info[0].As<Napi::Number>();
-//     Napi::Number second = info[1].As<Napi::Number>();
+      for (i = 0; (i < 3); i++)
+        ret += char_array_3[i];
+      i = 0;
+    }
+  }
 
-//     int returnValue = methods::add(first.Int32Value(), second.Int32Value());
+  if (i) {
+    for (j = i; j <4; j++)
+      char_array_4[j] = 0;
 
-//     return Napi::Number::New(env, returnValue);
-// }
+    for (j = 0; j <4; j++)
+      char_array_4[j] = base64_chars.find(char_array_4[j]);
+
+    char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
+    char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
+    char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
+
+    for (j = 0; (j < i - 1); j++) ret += char_array_3[j];
+  }
+
+  return ret;
+}
 
 Napi::Object methods::Init(Napi::Env env, Napi::Object exports)
 {

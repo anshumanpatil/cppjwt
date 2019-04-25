@@ -4,11 +4,11 @@
 namespace methods
 {
   std::string jwtcpp(std::string);
-  std::vector<std::string> splitjwt(const std::string &s, char delimiter);
+  std::string base64_decode(std::string const& encoded_string);
   //int add(int a, int b);
 
   Napi::String jwtcppWrapped(const Napi::CallbackInfo& info);
-  //Napi::Number AddWrapped(const Napi::CallbackInfo &info);
+  //Napi::String base64_decodeWrapped(const Napi::CallbackInfo &info);
 
   Napi::Object Init(Napi::Env env, Napi::Object exports);
 
