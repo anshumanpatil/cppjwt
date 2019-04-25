@@ -5,7 +5,7 @@
         "cflags_cc!": [ "-fno-exceptions" ],
         "sources": [
             "cppjwt/main.cpp",
-            "cppjwt/deps/functionexample.cpp"
+            "cppjwt/deps/methods.cpp"
         ],
         'include_dirs': [
             "<!@(node -p \"require('node-addon-api').include\")"

@@ -1,9 +1,10 @@
 #include <napi.h>
 
-namespace functionexample
+
+namespace methods
 {
-  std::string jwtcpp(Napi::String);
-  
+  std::string jwtcpp(std::string);
+  std::vector<std::string> splitjwt(const std::string &s, char delimiter);
   //int add(int a, int b);
 
   Napi::String jwtcppWrapped(const Napi::CallbackInfo& info);
