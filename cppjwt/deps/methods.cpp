@@ -1,8 +1,8 @@
 #include "methods.h"
-#include <sstream> // std::istringstream
-#include <string>
-#include <vector>
-#include <iostream>
+// #include <sstream>
+// #include <string>
+// #include <vector>
+// #include <iostream>
 
 std::string methods::jwtcpp(std::string val)
 {
@@ -19,17 +19,17 @@ Napi::String methods::jwtcppWrapped(const Napi::CallbackInfo &info)
     return returnValue;
 }
 
-std::vector<std::string> methods::splitjwt(const std::string &s, char delimiter)
-{
-    std::vector<std::string> tokens;
-    std::string token;
-    std::istringstream tokenStream(s);
-    while (std::getline(tokenStream, token, delimiter))
-    {
-        tokens.push_back(token);
-    }
-    return tokens;
-}
+// std::vector<std::string> methods::splitjwt(const std::string &s, char delimiter)
+// {
+//     std::vector<std::string> tokens;
+//     std::string token;
+//     std::istringstream tokenStream(s);
+//     while (std::getline(tokenStream, token, delimiter))
+//     {
+//         tokens.push_back(token);
+//     }
+//     return tokens;
+// }
 
 // int methods::add(int a, int b)
 // {
