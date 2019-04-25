@@ -1,0 +1,1 @@
+cmd_Release/testaddon.node := c++ -bundle -undefined dynamic_lookup -Wl,-no_pie -Wl,-search_paths_first -mmacosx-version-min=10.7 -arch x86_64 -L./Release -stdlib=libc++  -o Release/testaddon.node Release/obj.target/testaddon/cppjwt/main.o Release/obj.target/testaddon/cppjwt/deps/functionexample.o Release/nothing.a 
